@@ -1,42 +1,25 @@
-user_name = input("please enter your name: ")
-user_age = int(input("please enter your age: "))
-user_height = float(input("please enter your height: "))
-user_weight = float(input("please enter your weight: "))
-print(
-    f"your name is {user_name} you are {user_age} years old, you are {user_height} in height and {user_weight} in weight"
-)
+import random
 
-if user_age >= 18:
-    print("you are of age")
-else:
-    print("you are underage")
+secret_pin = random.randint(1, 10)
+attempt = 0
 
-if user_height < 5:
-    print("you are short")
-else:
-    print("you are tall")
+print("Let us play a game were you will try to guess a number i have in mind")
+print("If you guess it right you win!")
 
-if user_weight < 30:
-    print("you need more nutrient and you can't register")
-else:
-    print("you are healthy, you can register")
-    print(input("tell me more about youself: "))
-print(
-    input(
-        "good to hear about you but i will like to test your reasoning. should i proceed answer yes or no: "
-    )
-)
-print(int(input("5 + 5: ")))
-print(int(input("10 * 2: ")))
-input("Email for registeration: ")
-print("Thanks for registering you are now a member ")
+while True:
+    try:
+        guess = int(input("Guess: "))
+        attempt += 1
+        if guess == secret_pin:
+            print(f"You are correct!, You won after {attempt} attempt(s)")
+            break
 
-user1 = {
-    "User Name": user_name,
-    "User Age": user_age,
-    "User Height": user_height,
-    "User Weight": user_weight,
-}
-print("welcome", user_name)
-for keys, values in user1.items():
-    print(f" * {keys}: {values}")
+        elif guess < secret_pin:
+            print("Number is too low")
+        elif guess > secret_pin:
+            print("Number is too high")
+        else:
+            print("Please enter a valid Number")
+
+    except ValueError:
+        print("Invalid input")
