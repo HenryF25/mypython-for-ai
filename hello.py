@@ -1,25 +1,33 @@
 import random
 
-secret_pin = random.randint(1, 10)
-attempt = 0
+print("Maths Quiz")
+score = 0
+total_question = 5
 
-print("Let us play a game were you will try to guess a number i have in mind")
-print("If you guess it right you win!")
+for i in range(total_question):
+    a = random.randint(1, 10)
+    b = random.randint(1, 10)
+    operator = random.choice(["+", "-", "*", "/"])
 
-while True:
+    if operator == "+":
+        answer = a + b
+    elif operator == "-":
+        answer = a - b
+    elif operator == "*":
+        answer = a * b
+    else:
+        answer = a / b
+
+    print(f"question {i + 1}: What is {a} {operator} {b}? ")
+
     try:
-        guess = int(input("Guess: "))
-        attempt += 1
-        if guess == secret_pin:
-            print(f"You are correct!, You won after {attempt} attempt(s)")
-            break
-
-        elif guess < secret_pin:
-            print("Number is too low")
-        elif guess > secret_pin:
-            print("Number is too high")
+        user_input = float(input("Enter Answer: "))
+        if user_input == answer:
+            print("you are correct!")
+            score += 1
         else:
-            print("Please enter a valid Number")
-
+            print(f"You are wrong! The correct answer is {answer}")
     except ValueError:
-        print("Invalid input")
+        print(f"Invalid Input! correct answer is {answer}")
+
+print(f"Game Over! Total score is {score}/{total_question}")
