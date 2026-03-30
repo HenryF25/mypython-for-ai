@@ -1,33 +1,29 @@
-import random
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
 
-print("Maths Quiz")
-score = 0
-total_question = 5
+data = {
+    "message": [
+        "you won money",
+        "free money",
+        "input password",
+        "how are you doing",
+        "hello dear",
+        "how was your day",
+    ],
+    "label": ["spam", "spam", "spam", "not_spam", "not_spam", "not_spam"],
+}
+df = pd.DataFrame(data)
+vectorizer = CountVectorizer()
+x = vectorizer.fit_transform(df["message"])
+y = df(["label"])
 
-for i in range(total_question):
-    a = random.randint(1, 10)
-    b = random.randint(1, 10)
-    operator = random.choice(["+", "-", "*", "/"])
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
 
-    if operator == "+":
-        answer = a + b
-    elif operator == "-":
-        answer = a - b
-    elif operator == "*":
-        answer = a * b
-    else:
-        answer = a / b
+model = MultinomialNB()
+model.fit(x_train, y_train)
+predictions = model.predict(x_test)
 
-    print(f"question {i + 1}: What is {a} {operator} {b}? ")
-
-    try:
-        user_input = float(input("Enter Answer: "))
-        if user_input == answer:
-            print("you are correct!")
-            score += 1
-        else:
-            print(f"You are wrong! The correct answer is {answer}")
-    except ValueError:
-        print(f"Invalid Input! correct answer is {answer}")
-
-print(f"Game Over! Total score is {score}/{total_question}")
+print("detected: ", accuracy_score(y_test, predictions))
