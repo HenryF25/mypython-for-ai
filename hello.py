@@ -1,29 +1,24 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics.pairwise import cosine_similarity
 
 data = {
-    "message": [
-        "you won money",
-        "free money",
-        "input password",
-        "how are you doing",
-        "hello dear",
-        "how was your day",
-    ],
-    "label": ["spam", "spam", "spam", "not_spam", "not_spam", "not_spam"],
+    "title": ["iron man", "superman", "titanic", "batman", "red roses", "avengers"],
+    "genre": ["action", "action", "romance", "action", "romance", "action"],
 }
+
 df = pd.DataFrame(data)
 vectorizer = CountVectorizer()
-x = vectorizer.fit_transform(df["message"])
-y = df(["label"])
+x = vectorizer.fit_transform(df["genre"])
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2)
+similarity = cosine_similarity(x)
 
-model = MultinomialNB()
-model.fit(x_train, y_train)
-predictions = model.predict(x_test)
 
-print("detected: ", accuracy_score(y_test, predictions))
+def recommend(movie_name):
+    index = df[df["title"] == movie_name].index[0]
+    score = list(enumerate(similarity[index]))
+    score = sorted(score, key=lambda x: x[1], reverse=True)
+    print(f"similar movies are '{movie_name}': ")
+    for i in score[1:3]:
+        print(df.iloc[i[0]], ["title"])
+        recommend("iron man")
